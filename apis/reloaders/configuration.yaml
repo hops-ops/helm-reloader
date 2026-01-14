@@ -1,0 +1,14 @@
+apiVersion: meta.pkg.crossplane.io/v1alpha1
+kind: Configuration
+metadata:
+  name: helm-reloader
+  annotations:
+    meta.crossplane.io/maintainer: Patrick Lee Scott
+    meta.crossplane.io/source: github.com/hops-ops/helm-reloader
+    meta.crossplane.io/description: Installs the Stakater Reloader Helm chart for automatic pod restarts on ConfigMap/Secret changes.
+spec:
+  dependsOn:
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-helm
+    version: ">=v1.0.2"
+  - function: xpkg.crossplane.io/crossplane-contrib/function-auto-ready
+    version: ">=v0.6.0"

@@ -1,0 +1,49 @@
+# code: language=yaml
+#
+# Helm release for Stakater Reloader
+#
+# Integration defaults:
+# - Prometheus metrics enabled for reload event monitoring
+# - ServiceMonitor created for Prometheus Operator discovery
+#
+
+{{- $r := $state.reloader }}
+
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ $r.releaseName }}
+  annotations:
+    {{ setResourceNameAnnotation "helm-release-reloader" }}
+  labels: {{ $r.labels | toJson }}
+spec:
+  managementPolicies: {{ $r.managementPolicies | toJson }}
+  forProvider:
+    chart:
+      name: reloader
+      repository: https://stakater.github.io/stakater-charts
+      version: 2.2.7
+    namespace: {{ $r.namespace }}
+    {{- if $r.overrideAllValues }}
+    values:
+      {{- toYaml $r.overrideAllValues | nindent 6 }}
+    {{- else }}
+    values:
+      fullnameOverride: reloader
+      nameOverride: reloader
+      # Prometheus metrics for reload event monitoring
+      reloader:
+        watchGlobally: true
+        # Enable auto-reload by default
+        autoReloadAll: false
+      serviceMonitor:
+        enabled: true
+      {{- if $r.values }}
+      {{- toYaml $r.values | nindent 6 }}
+      {{- end }}
+    {{- end }}
+  rollbackLimit: 3
+  providerConfigRef:
+    name: {{ $r.providerConfigRef.name }}
+    kind: {{ $r.providerConfigRef.kind }}

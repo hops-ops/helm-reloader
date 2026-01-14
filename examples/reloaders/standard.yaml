@@ -1,0 +1,16 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: Reloader
+metadata:
+  name: reloader
+  namespace: example-env
+spec:
+  clusterName: example-cluster
+  namespace: reloader
+  labels:
+    team: platform
+    environment: production
+  values:
+    reloader:
+      watchGlobally: true
+      # Ignore specific namespaces
+      ignoreNamespaces: "kube-system,kube-public"
