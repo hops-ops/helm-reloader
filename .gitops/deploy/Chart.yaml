@@ -2,4 +2,4 @@ apiVersion: v2
 name: helm-reloader
 version: 0.0.0
 description: GitOps packaging for the Reloader Crossplane configuration
-appVersion: 2.2.7
+appVersion: 2.2.8
