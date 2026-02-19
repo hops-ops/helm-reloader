@@ -30,8 +30,6 @@ spec:
       {{- toYaml $r.overrideAllValues | nindent 6 }}
     {{- else }}
     values:
-      fullnameOverride: reloader
-      nameOverride: reloader
       # Prometheus metrics for reload event monitoring
       reloader:
         watchGlobally: true
